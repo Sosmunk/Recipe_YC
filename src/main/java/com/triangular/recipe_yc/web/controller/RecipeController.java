@@ -41,7 +41,7 @@ public class RecipeController {
 
     @PostMapping(value = "/edit/{id}")
     public RecipeInfo editRecipe(@PathVariable UUID id,
-                                RecipeInfo recipeInfo,
+                                @RequestPart ("recipeInfo") RecipeInfo recipeInfo,
                                 @Nullable @RequestPart("image") MultipartFile picture) {
         return recipeService.editRecipe(id, recipeInfo, picture);
     }
