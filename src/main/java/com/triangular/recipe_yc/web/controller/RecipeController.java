@@ -11,6 +11,7 @@ import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -31,6 +32,11 @@ public class RecipeController {
     @GetMapping(value = "/view/{id}")
     public RecipeInfo getRecipe(@PathVariable UUID id) {
         return recipeService.getRecipe(id);
+    }
+
+    @GetMapping(value = "/list")
+    public List<RecipeInfo> getRecipeList() {
+        return recipeService.getRecipeList();
     }
 
     @PostMapping(value = "/edit/{id}")

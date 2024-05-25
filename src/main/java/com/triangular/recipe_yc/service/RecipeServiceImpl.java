@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
 import java.util.UUID;
 @Service()
 @Transactional
@@ -44,5 +45,13 @@ public class RecipeServiceImpl implements RecipeService {
     @Override
     public void deleteRecipe(UUID recipeId) {
         recipeRepository.deleteById(recipeId);
+    }
+
+    @Override
+    public List<RecipeInfo> getRecipeList() {
+        return recipeRepository.findAll()
+                .stream()
+                .map(recipeFactory::createRecipeInfoFrom)
+                .toList();
     }
 }
