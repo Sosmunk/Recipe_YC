@@ -22,7 +22,7 @@ public class RecipeController {
     RecipeService recipeService;
 
     @PostMapping(value="/create")
-    public RecipeInfo addRecipe(@RequestPart("json") RecipeInfo recipeInfo,
+    public RecipeInfo addRecipe(@RequestPart("recipeInfo") RecipeInfo recipeInfo,
                                             @RequestPart("image") MultipartFile picture) {
 
         return recipeService.saveRecipe(recipeInfo, picture);
