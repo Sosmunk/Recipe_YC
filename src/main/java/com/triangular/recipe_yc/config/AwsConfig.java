@@ -15,7 +15,7 @@ public class AwsConfig {
                 .withCredentials(new EnvironmentVariableCredentialsProvider())
                 .withEndpointConfiguration(
                         new AmazonS3ClientBuilder.EndpointConfiguration(
-                                "storage.yandexcloud.net","ru-central1"
+                                "functions.yandexcloud.net","ru-central1"
                         )
                 )
                 .build();
