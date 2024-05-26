@@ -2,6 +2,10 @@ package com.triangular.recipe_yc.web.controller;
 
 import com.triangular.recipe_yc.dto.RecipeInfo;
 import com.triangular.recipe_yc.service.RecipeService;
+import com.triangular.recipe_yc.web.annotation.ApiV1;
+import com.triangular.recipe_yc.web.response.EmptyResponse;
+import com.triangular.recipe_yc.web.response.ItemResponse;
+import com.triangular.recipe_yc.web.response.ListResponse;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -14,41 +18,40 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 import java.util.UUID;
 
-@RestController
-@RequestMapping("/recipe")
+@ApiV1
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class RecipeController {
 
     RecipeService recipeService;
 
-    @PostMapping(value="/create")
-    public RecipeInfo addRecipe(@RequestPart("recipeInfo") RecipeInfo recipeInfo,
-                                            @RequestPart("image") MultipartFile picture) {
+    @PostMapping(value = "/recipe/create")
+    public ItemResponse<RecipeInfo> addRecipe(@RequestPart("recipeInfo") RecipeInfo recipeInfo,
+                                              @RequestPart("image") MultipartFile picture) {
 
-        return recipeService.saveRecipe(recipeInfo, picture);
+        return new ItemResponse<>(recipeService.saveRecipe(recipeInfo, picture));
     }
 
-    @GetMapping(value = "/view/{id}")
-    public RecipeInfo getRecipe(@PathVariable UUID id) {
-        return recipeService.getRecipe(id);
+    @GetMapping(value = "/recipe/view/{id}")
+    public ItemResponse<RecipeInfo> getRecipe(@PathVariable UUID id) {
+        return new ItemResponse<>(recipeService.getRecipe(id));
     }
 
-    @GetMapping(value = "/list")
-    public List<RecipeInfo> getRecipeList() {
-        return recipeService.getRecipeList();
+    @GetMapping(value = "/recipe/list")
+    public ListResponse<RecipeInfo> getRecipeList() {
+        return new ListResponse<>(recipeService.getRecipeList());
     }
 
-    @PostMapping(value = "/edit/{id}")
-    public RecipeInfo editRecipe(@PathVariable UUID id,
-                                @RequestPart ("recipeInfo") RecipeInfo recipeInfo,
-                                @Nullable @RequestPart("image") MultipartFile picture) {
-        return recipeService.editRecipe(id, recipeInfo, picture);
+    @PostMapping(value = "/recipe/edit/{id}")
+    public ItemResponse<RecipeInfo> editRecipe(@PathVariable UUID id,
+                                               @RequestPart("recipeInfo") RecipeInfo recipeInfo,
+                                               @Nullable @RequestPart("image") MultipartFile picture) {
+        return new ItemResponse<>(recipeService.editRecipe(id, recipeInfo, picture));
     }
 
-    @DeleteMapping(value = "/delete/{id}")
-    public ResponseEntity<String> deleteRecipe (@PathVariable UUID id) {
+    @DeleteMapping(value = "/recipe/delete/{id}")
+    public EmptyResponse deleteRecipe(@PathVariable UUID id) {
         recipeService.deleteRecipe(id);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new EmptyResponse();
     }
 }
