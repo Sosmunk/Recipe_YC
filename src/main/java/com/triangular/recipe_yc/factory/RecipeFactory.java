@@ -16,6 +16,7 @@ public class RecipeFactory {
 
     public RecipeInfo createRecipeInfoFrom(Recipe recipe) {
         return RecipeInfo.builder()
+                .id(recipe.getId())
                 .name(recipe.getName())
                 .text(recipe.getText())
                 .picture(recipe.getPicture())

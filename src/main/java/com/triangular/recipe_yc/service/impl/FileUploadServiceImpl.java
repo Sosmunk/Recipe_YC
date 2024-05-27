@@ -48,7 +48,7 @@ public class FileUploadServiceImpl implements FileUploadService {
 
             HttpEntity<Map<String, Object>> requestEntity = new HttpEntity<>(requestBody, headers);
 
-            ResponseEntity response = restTemplate.postForEntity(uploadFunctionUrl, requestEntity, String.class);
+            ResponseEntity<String> response = restTemplate.postForEntity(uploadFunctionUrl, requestEntity, String.class);
             if (!response.getStatusCode().is2xxSuccessful()) {
                 throw new ServiceException("Ошибка функции: " + response.getStatusCode());
             }
