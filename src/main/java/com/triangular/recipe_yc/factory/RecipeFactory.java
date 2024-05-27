@@ -7,11 +7,10 @@ import org.springframework.stereotype.Component;
 @Component
 public class RecipeFactory {
 
-    public Recipe createRecipeFrom(RecipeInfo recipeInfo, String pictureLink) {
+    public Recipe createRecipeFrom(RecipeInfo recipeInfo) {
         return Recipe.builder()
                 .name(recipeInfo.getName())
                 .text(recipeInfo.getText())
-                .picture(pictureLink)
                 .build();
     }
 

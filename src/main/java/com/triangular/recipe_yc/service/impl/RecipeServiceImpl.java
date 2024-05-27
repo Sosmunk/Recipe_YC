@@ -1,9 +1,11 @@
-package com.triangular.recipe_yc.service;
+package com.triangular.recipe_yc.service.impl;
 
 import com.triangular.recipe_yc.dto.RecipeInfo;
 import com.triangular.recipe_yc.entity.Recipe;
 import com.triangular.recipe_yc.factory.RecipeFactory;
 import com.triangular.recipe_yc.repository.RecipeRepository;
+import com.triangular.recipe_yc.service.FileUploadService;
+import com.triangular.recipe_yc.service.RecipeService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -22,9 +24,20 @@ public class RecipeServiceImpl implements RecipeService {
     RecipeFactory recipeFactory;
 
     RecipeRepository recipeRepository;
+
+    FileUploadService fileUploadService;
+
     @Override
     public RecipeInfo saveRecipe(RecipeInfo recipeInfo, MultipartFile picture) {
-        Recipe recipe = recipeFactory.createRecipeFrom(recipeInfo, "NOT IMPLEMENTED");
+
+        Recipe recipe = recipeFactory.createRecipeFrom(recipeInfo);
+        recipeRepository.save(recipe);
+
+        String pictureUrl = fileUploadService.uploadFile(picture, recipe.getId()
+                + "/"
+                + picture.getOriginalFilename()
+        );
+        recipe.setPicture(pictureUrl);
         recipeRepository.save(recipe);
         return recipeFactory.createRecipeInfoFrom(recipe);
     }
