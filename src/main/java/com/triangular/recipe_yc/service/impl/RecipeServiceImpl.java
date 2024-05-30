@@ -50,7 +50,14 @@ public class RecipeServiceImpl implements RecipeService {
     @Override
     public RecipeInfo editRecipe(UUID recipeId, RecipeInfo recipeInfo, MultipartFile picture) {
         Recipe recipe = recipeRepository.findById(recipeId).orElseThrow();
-        Recipe changedRecipe = recipeFactory.assign(recipe, recipeInfo, "NOT IMPLEMENTED");
+        String pictureLink = recipe.getPicture();
+        if (picture != null) {
+            pictureLink = fileUploadService.uploadFile(
+                    picture,
+                    recipe.getId() + "/" + picture.getOriginalFilename()
+            );
+        }
+        Recipe changedRecipe = recipeFactory.assign(recipe, recipeInfo, pictureLink);
         recipeRepository.save(changedRecipe);
         return recipeFactory.createRecipeInfoFrom(recipe);
     }
